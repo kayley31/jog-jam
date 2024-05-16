@@ -20,6 +20,11 @@ function About () {
                 <li>My favourite hobby is dancing</li>
                 <li>I've been dancing since I was 2 years old and I still find it so fun!</li>
             </ul>
+            <h2>Roshni</h2>
+            <ul class='aboutul'>
+                <li>My favourite hobby is karaoke!</li>
+                <li>I can't sing very well but that doesn't stop me from belting out Taylor Swift albums.</li>
+            </ul>
          </div>
         </>     
     )
