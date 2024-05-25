@@ -4,7 +4,7 @@ import Navbar from 'react-bootstrap/Navbar';
 import './Navbar.css';
 import logogrey from '../images/logogrey.png'
 
-function CollapsibleExample() {
+function Header() {
   return (
     <Navbar collapseOnSelect expand="lg" className="navbar">
       <Container>
@@ -25,4 +25,4 @@ function CollapsibleExample() {
   );
 }
 
-export default CollapsibleExample;
+export default Header;

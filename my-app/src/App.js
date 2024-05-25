@@ -1,13 +1,13 @@
 import './App.css';
 import About from './components/About';
-import ColorSchemesExample from './components/Navbar';
+import Header from './components/Navbar';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 
 function App() {
   return (
     <div className="App">
-        <ColorSchemesExample />
+        <Header />
         <div className="Body">
           <About />
         </div>
