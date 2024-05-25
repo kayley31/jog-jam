@@ -33,6 +33,7 @@ function About () {
             <h2>Our Project</h2>
             <ul class='aboutul'>
                 <li><a href="https://docs.google.com/document/d/1Ul7zCfAGhidcLS53U4CHJXLvmGzKIssS/edit?usp=sharing&ouid=112849879967894023875&rtpof=true&sd=true">Find out more about our project here</a></li>
+            </ul>
          </div>
         </>     
     )

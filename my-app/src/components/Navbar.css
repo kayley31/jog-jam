@@ -1,0 +1,17 @@
+.navbar {
+    background: #424242;
+}
+
+.logo {
+    height: 60px;
+}
+
+.navlink {
+    color: #ffffff !important;
+    font-family: 'Poppins', Arial, Helvetica, sans-serif;
+    font-size: 18px !important;
+}
+
+.navlink:hover {
+    color: #FCFC62 !important;
+}
