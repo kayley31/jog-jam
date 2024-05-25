@@ -1,6 +1,7 @@
 import './App.css';
 import About from './components/About';
 import Header from './components/Navbar';
+import Footer from './components/Footer'
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 
@@ -11,6 +12,7 @@ function App() {
         <div className="Body">
           <About />
         </div>
+        <Footer />
     </div>
   );
 }
