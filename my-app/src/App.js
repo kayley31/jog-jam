@@ -1,6 +1,7 @@
 import './App.css';
 import About from './components/About';
 import Header from './components/Navbar';
+import Footer from './components/Footer'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import NewPlaylist from './components/NewPlaylist';
 import Home from './Webpages/Home';
@@ -23,9 +24,9 @@ function App() {
 
             </Routes>
           </div>
+          <Footer />
       </div>
     </Router>  
-      
   );
 }
 
