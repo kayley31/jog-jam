@@ -6,12 +6,12 @@
     height: 60px;
 }
 
-.navlink {
+.nav-item .nav-link {
     color: #ffffff !important;
     font-family: 'Poppins', Arial, Helvetica, sans-serif;
     font-size: 18px !important;
 }
 
-.navlink:hover {
+.nav-item .nav-link:hover {
     color: #FCFC62 !important;
 }
