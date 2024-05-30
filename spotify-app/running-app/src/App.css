@@ -1,0 +1,19 @@
+.App-header {
+  background-color: #ffffff;
+  min-height: 500px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.Body {
+  padding: 20px 60px 20px 60px;
+  min-height: 100vh;
+}
+
+.footer {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
