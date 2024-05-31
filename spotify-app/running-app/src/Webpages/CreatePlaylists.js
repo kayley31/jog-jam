@@ -3,7 +3,7 @@ import CreatePlaylist from "../Components/CreatePlaylist";
 function CreatePlaylists(){
     return(
         <>
-        <h2>create playlist page</h2>
+        <h2>Create Your Own JogJam Playlist</h2>
         <CreatePlaylist />
         </>
     )
