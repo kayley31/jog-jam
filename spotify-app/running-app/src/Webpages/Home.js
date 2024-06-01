@@ -1,14 +1,17 @@
-import NewPlaylist from "../Components/NewPlaylist"
+import NewPlaylist from "../Components/NewPlaylist";
+import { useNavigate } from 'react-router-dom';
 
 function Home(){
+    const navigate = useNavigate();
     return(
         <>
         <h1>Welcome Back!</h1>
-        <h3>Featured Playlist</h3>
-        <p> See All</p>
-        <h3>My Playlist</h3>
-        <p> See All</p>
+        <h3>Featured Playlists</h3>
+        <button onClick={() => navigate('/find')} className='seeAll'>See All</button>
+        <h3>My Playlists</h3>
         <NewPlaylist />
+        <button onClick={() => navigate('/my')} className='seeAll'>See All</button>
+        <button onClick={() => navigate('/create')} className='createBtn'>Create New Playlist</button>
         </>
     )
 }
