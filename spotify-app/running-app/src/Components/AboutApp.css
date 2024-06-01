@@ -1,0 +1,16 @@
+.headline {
+    padding-top: 20px;
+    font-size: 30px;
+    font-family: 'Poppins', Arial, Helvetica, sans-serif;
+}
+
+.logo-white {
+    width: 40%;
+    float: right;
+}
+
+.links {
+    font-size: 16px;
+    color: rgb(128, 128, 128);
+    font-weight: bold;
+}

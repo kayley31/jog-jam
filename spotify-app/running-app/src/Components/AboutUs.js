@@ -1,5 +1,5 @@
 
-function About () {
+function AboutUs () {
     return (
         <>
          <h1>Group 4 - About Us</h1>
@@ -38,4 +38,4 @@ function About () {
     )
 }
 
-export default About
+export default AboutUs
