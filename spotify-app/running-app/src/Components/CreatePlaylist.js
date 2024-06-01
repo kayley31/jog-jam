@@ -43,7 +43,12 @@ const limitedGenres = [
 
   const fetchRecommendations = () => {
     if (!tempoCategory) {
-      console.error('Please select a tempo category');
+      alert('Please select a tempo category');
+      return;
+    }
+
+    if (!selectedGenre && !artistNames) {
+      alert('Please select a genre or enter an artist name.');
       return;
     }
 

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import './App.css';
 import CreatePlaylist from './Components/CreatePlaylist';
-import About from './Components/About';
+import AboutApp from './Components/AboutApp';
 import Header from './Components/Navbar';
 import Footer from './Components/Footer'
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -10,6 +10,7 @@ import Home from './Webpages/Home';
 import MyPlaylists from './Webpages/MyPlaylists';
 import CreatePlaylists from './Webpages/CreatePlaylists';
 import {BrowserRouter as Router, Route, Routes} from 'react-router-dom';
+import AboutUs from './Components/AboutUs';
 
 function App() {
   return (
@@ -19,10 +20,11 @@ function App() {
           <div className="Body">
             <Routes>
               <Route exact path="/" element={<Home />} />
-              <Route path="/about" element={<About />} />
+              <Route path="/about" element={<AboutApp />} />
               <Route path="/new-playlist" element={<NewPlaylist />} />
               <Route path="/my" element={<MyPlaylists />} /> 
               <Route path="/create" element={<CreatePlaylists />} /> 
+              <Route path="/about-the-team" element={<AboutUs />} />
             </Routes>
           </div>
           <div className='footer'>
