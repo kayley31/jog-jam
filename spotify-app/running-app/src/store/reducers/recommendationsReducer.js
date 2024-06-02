@@ -1,34 +1,35 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { RECOMMENDATIONS_LOADING, RECOMMENDATIONS_RECEIVED, RECOMMENDATIONS_ERROR } from '../actions/recommendationsActions';
 
 // Defining the initial state for the recommendations slice
-
 const initialState = {
-  recommendations: [], // To hold the list of genres fetched from the API
+  recommendations: [], // To hold the list of recommendations fetched from the API
   status: 'idle', // Possible statuses: 'idle', 'loading', 'succeeded', 'failed'
   error: null, // To hold the error message when the API call fails
 };
 
-const recommendationsSlice = createSlice({
-  name: 'recommendations',
-  initialState,
-  reducers: {
-    // Reducer to update the state with the loading status when the API call is made
-    recommendationsLoading(state) {
-      state.status = 'loading';
-    },
-    // Reducer to update the state with the fetched genres when the API call is successful
-    recommendationsReceived(state, action) {
-      state.status = 'succeeded';
-      state.recommendations = action.payload; // The payload is the list of genres fetched from the API
-    },
-    // Reducer to update the state with the error message when the API call fails
-    recommendationsError(state, action) {
-      state.status = 'failed';
-      state.error = action.payload; // The payload is the error message
-    },
-  },
-});
+const recommendationsReducer = (state = initialState, action) => {
+  // Checks the action type and updates the state accordingly
+  switch (action.type) {
+    case RECOMMENDATIONS_LOADING:
+      return {
+        ...state, // Copies the current state
+        status: 'loading', // Sets the status to 'loading' indicating an API call is in progress
+      };
+    case RECOMMENDATIONS_RECEIVED:
+      return {
+        ...state,
+        status: 'succeeded', // Sets the status to 'succeeded' indicating the API call was successful
+        recommendations: action.payload, // Updates the recommendations array with the data fetched from the API
+      };
+    case RECOMMENDATIONS_ERROR:
+      return {
+        ...state,
+        status: 'failed', // Sets the status to 'failed' indicating the API call failed
+        error: action.payload, // Sets the error message to the value returned by the API
+      };
+    default: // If the action type does not match any of the above, the reducer returns the current state
+      return state;
+  }
+};
 
-export const { recommendationsLoading, recommendationsReceived, recommendationsError } = recommendationsSlice.actions;
-
-export default recommendationsSlice.reducer;
+export default recommendationsReducer;

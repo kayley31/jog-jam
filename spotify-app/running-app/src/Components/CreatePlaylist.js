@@ -2,9 +2,9 @@ import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 // Import actions from reducers
-import { addPlaylist } from '../store/reducers/playlistReducer';
-import { genresLoading, genresReceived, genresError } from '../store/reducers/genresReducer';
-import { recommendationsLoading, recommendationsReceived, recommendationsError } from '../store/reducers/recommendationsReducer'; 
+import { addPlaylist } from '../store/actions/playlistActions';
+import { genresLoading, genresReceived, genresError } from '../store/actions/genresActions';
+import { recommendationsLoading, recommendationsReceived, recommendationsError } from '../store/actions/recommendationsActions';
 
 import './CreatePlaylist.css';
 

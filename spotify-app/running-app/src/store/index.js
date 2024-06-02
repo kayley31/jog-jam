@@ -4,16 +4,14 @@ import storage from 'redux-persist/lib/storage'; // Using localStorage for persi
 import rootReducer from './reducers';
 
 // Defining the configuration for redux-persist
-// 'key' specifies the root key under which the entire state tree will be stored
-// 'storage' specifies where the state should be persisted (in this case, localStorage)
 const persistConfig = {
-  key: 'root',
-  storage,
+  key: 'root', // Used to store the state in localStorage
+  storage, // Defaults to localStorage
+
 };
 
-// Creating the Redux store with the persisted reducer
 // This sets up the Redux store with the logic to save/load the state based on the persistedReducer
-const persistedReducer = persistReducer(persistConfig, rootReducer);
+const persistedReducer = persistReducer(persistConfig, rootReducer); 
 
 // Create the store with the persisted reducer
 // The persistor manages the process of saving and loading the state

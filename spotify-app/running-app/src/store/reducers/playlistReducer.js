@@ -1,23 +1,21 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { ADD_PLAYLIST } from '../actions/playlistActions';
 
 // Defining the initial state for the playlists slice
-
 const initialState = {
   playlists: [],
 };
 
+// Reducer function for the playlists
+const playlistReducer = (state = initialState, action) => {
+  switch (action.type) {
+    case ADD_PLAYLIST:
+      return {
+        ...state,
+        playlists: [...state.playlists, action.payload], // Adds the new playlist to the playlists array
+      };
+    default:
+      return state;
+  }
+};
 
-const playlistSlice = createSlice({
-  name: 'playlists',
-  initialState,
-  reducers: {
-    // Reducer for adding a new playlist
-    addPlaylist(state, action) {
-      state.playlists.push(action.payload); // Pushes the new playlist to the playlists array
-    },
-  },
-});
-
-export const { addPlaylist } = playlistSlice.actions;
-
-export default playlistSlice.reducer;
+export default playlistReducer;
