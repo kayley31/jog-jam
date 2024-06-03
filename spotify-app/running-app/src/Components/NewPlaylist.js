@@ -1,7 +1,9 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
+import { useSelector } from 'react-redux';
 import './NewPlaylist.css';
-import Popup from './Popup'; // Import the Modal component
+import Popup from './Popup';
 
+// Array of image paths for playlist covers
 const playlistCovers = [
     './covers/runner.png',
     './covers/shoe.png',
@@ -17,18 +19,13 @@ const playlistCovers = [
 ];
 
 const NewPlaylist = () => {
-    const [playlists, setPlaylists] = useState([]);
+    
+    // Accessing the playlists state from the Redux store
+    const playlists = useSelector((state => state.playlists.playlists))
+    
+    // State to keep track of the currently selected playlist
     const [selectedPlaylist, setSelectedPlaylist] = useState(null);
-
-    useEffect(() => {
-        loadPlaylists();
-    }, []);
-
-    const loadPlaylists = () => {
-        const savedPlaylists = JSON.parse(localStorage.getItem('playlists')) || [];
-        setPlaylists(savedPlaylists);
-    };
-
+    
     const openPlaylist = (playlist) => {
         setSelectedPlaylist(playlist);
     };
