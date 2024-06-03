@@ -22,7 +22,6 @@ const persistConfig = {
 // This sets up the Redux store with the logic to save/load the state based on the persistedReducer
 const persistedReducer = persistReducer(persistConfig, rootReducer); 
 
-// Create the store with the persisted reducer
 // The persistor manages the process of saving and loading the state
 const store = configureStore({
   reducer: persistedReducer,

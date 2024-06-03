@@ -1,3 +1,4 @@
+// Action types
 export const RECOMMENDATIONS_LOADING = 'recommendations/loading';
 export const RECOMMENDATIONS_RECEIVED = 'recommendations/received';
 export const RECOMMENDATIONS_ERROR = 'recommendations/error';
