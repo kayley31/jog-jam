@@ -15,9 +15,6 @@ const CreatePlaylist = () => {
   const { genres = [], status: genreStatus, error: genreError } = useSelector((state) => state.genres);
   const { recommendations = [], status: recommendationsStatus, error: recommendationsError } = useSelector((state) => state.recommendations);
 
-  
-  // const [recommendations, setRecommendations] = useState([]);
-  // const [genres, setGenres] = useState([]);
   const [selectedGenre, setSelectedGenre] = useState('');
   const [tempoCategory, setTempoCategory] = useState('');
   const [artistNames, setArtistNames] = useState('');
