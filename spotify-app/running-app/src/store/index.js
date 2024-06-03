@@ -7,6 +7,7 @@ import rootReducer from './reducers';
 const persistConfig = {
   key: 'root', // Used to store the state in localStorage
   storage, // Defaults to localStorage
+  whitelist: ['playlists'], // Only persist the playlists slice of state
 
 };
 
