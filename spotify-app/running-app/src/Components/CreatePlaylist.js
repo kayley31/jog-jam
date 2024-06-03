@@ -130,12 +130,6 @@ const limitedGenres = [
     // Dispatching action to add playlist to Redux store
     dispatch(addPlaylist(newPlaylist));
 
-    // Keeping old code commented out just incase I did something wrong
-
-    // const savedPlaylists = JSON.parse(localStorage.getItem('playlists')) || [];
-    // savedPlaylists.push(newPlaylist);
-    // localStorage.setItem('playlists', JSON.stringify(savedPlaylists));
-
     console.log('Playlist created:', newPlaylist);
     alert('Playlist created!');
     setPlaylistName('');
@@ -146,7 +140,7 @@ const limitedGenres = [
   return (
     <div>
       {/* Displaying loading/error/success states for genres */}
-      {genreStatus === 'loading' && <p>Loading genres...</p>}
+      {genreStatus === 'loading' && <p className='loading'>Loading genres...</p>}
       {genreStatus === 'failed' && <p>{genreError}</p>}
       {genreStatus === 'succeeded' && (
         <div className="flex-container">
@@ -187,7 +181,7 @@ const limitedGenres = [
       <div>
         <button className='centerBtn' onClick={fetchRecommendations}>Generate Recommendations</button>
         {/* Displaying loading/error states for recommendations */}
-        {recommendationsStatus === 'loading' && <p>Loading recommendations...</p>}
+        {recommendationsStatus === 'loading' && <p className='loading'>Loading recommendations...</p>}
         {recommendationsStatus === 'failed' && <p>Error: {recommendationsError}</p>}
         <div className="recommendations-container">
           {recommendations.map(track => (

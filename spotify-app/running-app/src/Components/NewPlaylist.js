@@ -26,18 +26,6 @@ const NewPlaylist = () => {
     // State to keep track of the currently selected playlist
     const [selectedPlaylist, setSelectedPlaylist] = useState(null);
     
-    // Keeping old code commented out just incase I did something wrong
-
-    // const [playlists, setPlaylists] = useState([]);
-    // useEffect(() => {
-    //     loadPlaylists();
-    // }, []);
-
-    // const loadPlaylists = () => {
-    //     const savedPlaylists = JSON.parse(localStorage.getItem('playlists')) || [];
-    //     setPlaylists(savedPlaylists);
-    // };
-
     const openPlaylist = (playlist) => {
         setSelectedPlaylist(playlist);
     };
