@@ -129,3 +129,8 @@ a:hover {
   object-fit: cover;
   border-radius: 5px;
 }
+
+.loading {
+  text-align: center;
+  padding: 20px;
+}
