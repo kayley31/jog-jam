@@ -1,7 +1,8 @@
 .playlist-container {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    gap: 5%;
+    gap: 60px;
+    margin-top: 2%;
 }
 
 .playlist-item {
@@ -11,7 +12,6 @@
     transition: transform 0.3s;
     display: flex;
     flex-direction: column;
-    align-items: center;
 }
 
 .playlist-item:hover {
