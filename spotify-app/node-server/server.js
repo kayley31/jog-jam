@@ -1,9 +1,12 @@
 import express from 'express';
 import fetch from 'node-fetch';
 import cors from 'cors';
+import config from 'config';
 
 const app = express();
-const PORT = process.env.PORT || 3001;
+const PORT = config.get('port');
+const clientId = config.get('clientId');
+const clientSecret = config.get('clientSecret');
 
 app.use(express.json());
 
@@ -14,36 +17,58 @@ app.use((req, res, next) => {
   next();
 });
 
-// Enable CORS for all routes - this is needed to connect front and backend
+// enable CORS for all routes - to connect front and backend
 app.use(cors());
 
-//these are Kayley's credentials, ideally we will change to make it more secure
-const clientId = '360036d328e8496f8d1ba897fed658c8';
-const clientSecret = 'b020dec81c8c452fb8c73be57dc29302';
-
-//get Spotify access token using above cientID and clientSecet
+// get Spotify access token using clientID and clientSecret
 const getAccessToken = async () => {
-  const url = 'https://accounts.spotify.com/api/token';
-  const response = await fetch(url, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/x-www-form-urlencoded',
-      'Authorization': 'Basic ' + Buffer.from(clientId + ':' + clientSecret).toString('base64'),
-    },
-    body: new URLSearchParams({
-      grant_type: 'client_credentials',
-    }),
-  });
+  let accessToken;
+  try {
+    const url = 'https://accounts.spotify.com/api/token';
+    const response = await fetch(url, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+        'Authorization': 'Basic ' + Buffer.from(clientId + ':' + clientSecret).toString('base64'),
+      },
+      body: new URLSearchParams({
+        grant_type: 'client_credentials',
+      }),
+    });
 
-  const data = await response.json();
-  return data.access_token;
+    const data = await response.json();
+    accessToken = data.access_token;
+
+  } 
+  // if there is an error with the original credentials, try backup credentials
+  catch (error) {
+    console.error('Error fetching access token with primary credentials:', error.message);
+    // fallback to backup credentials
+    clientId = config.get('backupClientId');
+    clientSecret = config.get('backupClientSecret');
+    console.log('Using backup credentials:', clientId, clientSecret);
+    const response = await fetch('https://accounts.spotify.com/api/token', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+        'Authorization': 'Basic ' + Buffer.from(clientId + ':' + clientSecret).toString('base64'),
+      },
+      body: new URLSearchParams({
+        grant_type: 'client_credentials',
+      }),
+    });
+    const data = await response.json();
+    accessToken = data.access_token;
+  }
+  return accessToken;
+
 };
 
 app.get('/', (req, res) => {
   res.send('Welcome to our Spotify API.');
 });
 
-//Get genres endpoint to display to user on frontend dropdown
+// get genres endpoint to display to user on frontend dropdown
 app.get('/api/genres', async (req, res) => {
   try {
     const accessToken = await getAccessToken();
@@ -67,17 +92,17 @@ app.get('/api/genres', async (req, res) => {
   }
 });
 
-// Define additional parameters for recommendations. Add more as needed
+// Define additional parameters for recommendations
 const recommendationOptions = {
-  limit: 15,
-  target_danceability: 0.9,
-  target_popularity: 60-100,
+  limit: 15, // no. of songs
+  target_danceability: 0.9, // danceability index from 0-1
+  target_popularity: 60 - 100, // popularity index from 0-100
 };
 
 const tempoCategories = {
   jogging: { min: 120, max: 140 },
   average: { min: 140, max: 180 },
-  fast: { min: 180, max: 210},
+  fast: { min: 180, max: 210 },
 };
 
 const getArtistId = async (artistName, accessToken) => {
@@ -112,7 +137,9 @@ app.get('/api/recommendations', async (req, res) => {
 
     let seedArtists = [];
     if (artists) {
+      // split artists into an array, then iterate over each artist name in the array
       const artistNames = artists.split(',').map(name => name.trim());
+      // map each name to its corresponding artist ID
       seedArtists = await Promise.all(artistNames.map(name => getArtistId(name, accessToken)));
     }
 
