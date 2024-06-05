@@ -10,6 +10,7 @@ Before you continue, please make sure you are in the `main` branch
 Get the node server up and running by:
 1) Going into ./spotify-app/node-server
 2) Running the following in the terminal:
+    `npm install config`
     `node server.js`
 
 If this step is successful, you should see "Server is running on port 3001" in the terminal.
