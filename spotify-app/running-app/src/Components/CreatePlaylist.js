@@ -13,7 +13,7 @@ const CreatePlaylist = () => {
 
   // Using useSelector hook to access state from Redux store
   const { genres = [], status: genreStatus, error: genreError } = useSelector((state) => state.genres);
-  const { recommendations = [], status: recommendationsStatus, error: recommendationsError } = useSelector((state) => state.recommendations);
+  const { recommendations = [], status: recommendationStatus, error: recommendationError } = useSelector((state) => state.recommendations);
 
   const [selectedGenre, setSelectedGenre] = useState('');
   const [tempoCategory, setTempoCategory] = useState('');
@@ -145,7 +145,7 @@ const limitedGenres = [
             <h4>Step 1</h4>
             <h1>Tempo</h1>
             <p className="flex-text">Do you want go for a gentle jog, or work on your speed? Set your pace!</p>
-            <select id="dropdown" value={tempoCategory} onChange={handleTempoChange}>
+            <select id="dropdown" data-testid="tempo-dropdown" value={tempoCategory} onChange={handleTempoChange}>
               <option value="">--Choose Tempo--</option>
               <option value="jogging">Jog</option>
               <option value="average">Run</option>
@@ -157,7 +157,7 @@ const limitedGenres = [
             <h4>Step 2 (optional)</h4>
             <h1>Genre</h1>
             <p className="flex-text">Do you have a favourite genre? Choose it here! If not, skip to step 3.</p>
-            <select id="dropdown" value={selectedGenre} onChange={handleGenreChange}>
+            <select id="dropdown" data-testid="genres-dropdown" value={selectedGenre} onChange={handleGenreChange}>
               <option value="">--Choose Genre--</option>
               {genres.map((genre) => (
                 <option key={genre} value={genre}>
@@ -178,8 +178,8 @@ const limitedGenres = [
       <div>
         <button className='centerBtn' onClick={fetchRecommendations}>Generate Recommendations</button>
         {/* Displaying loading/error states for recommendations */}
-        {recommendationsStatus === 'loading' && <p className='loading'>Loading recommendations...</p>}
-        {recommendationsStatus === 'failed' && <p>Error: {recommendationsError}</p>}
+        {recommendationStatus === 'loading' && <p className='loading'>Loading recommendations...</p>}
+        {recommendationStatus === 'failed' && <p>Error: {recommendationError}</p>}
         <div className="recommendations-container">
           {recommendations.map(track => (
             <div key={track.id} className="recommendation-item">
@@ -194,7 +194,7 @@ const limitedGenres = [
         </div>
         {recommendations.length > 0 && (
           <div>
-            <input id='playlistName' type="text" placeholder="Enter playlist name" value={playlistName} onChange={(e) => setPlaylistName(e.target.value)} />
+            <input id='playlistName' data-testid="playlist-name-input" type="text" placeholder="Enter playlist name" value={playlistName} onChange={(e) => setPlaylistName(e.target.value)} />
             <button className='centerBtn' onClick={createPlaylist}>Create Playlist</button>
           </div>
         )}
