@@ -11,6 +11,7 @@ import MyPlaylists from './Webpages/MyPlaylists';
 import CreatePlaylists from './Webpages/CreatePlaylists';
 import {BrowserRouter as Router, Route, Routes} from 'react-router-dom';
 import AboutUs from './Components/AboutUs';
+import SpotifyCarousel from './Components/SpotifyCarousel';
 
 function App() {
   return (
@@ -25,6 +26,7 @@ function App() {
               <Route path="/my" element={<MyPlaylists />} /> 
               <Route path="/create" element={<CreatePlaylists />} /> 
               <Route path="/about-the-team" element={<AboutUs />} />
+              <Route path="/carousel" element={<SpotifyCarousel />} />
             </Routes>
           </div>
           <div className='footer'>
