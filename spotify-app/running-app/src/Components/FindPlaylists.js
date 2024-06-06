@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import { Carousel } from 'react-responsive-carousel';
-import "react-responsive-carousel/lib/styles/carousel.min.css";
-import './SpotifyCarousel.css';
+import Slider from "react-slick";
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
+import './FindPlaylists.css';
 import Popup from './Popup';
 
 const SpotifyCarousel = () => {
@@ -158,6 +159,35 @@ const SpotifyCarousel = () => {
     setIsModalOpen(false);
   };
 
+  const carouselConfig = {
+    dots: true,
+    infinite: false,
+    lazyLoad: true,
+    speed: 500,
+    slidesToShow: 10,
+    slidesToScroll: 3,
+    arrows: true,
+    className: "carousel__wrapper",
+    adaptiveHeight: true,
+    responsive: [
+      {
+        breakpoint: 900,
+        settings: {
+          slidesToShow: 2,
+          slidesToScroll: 2,
+        },
+      },
+      {
+        breakpoint: 700,
+        settings: {
+          slidesToShow: 1,
+          slidesToScroll: 1,
+          dots: false,
+        },
+      },
+    ],
+  };
+
   if (loading) {
     return <div>Loading...</div>;
   }
@@ -169,16 +199,7 @@ const SpotifyCarousel = () => {
   return (
     <div className="carousel-container">
       <h2>Featured Playlists</h2>
-      <Carousel 
-        showThumbs={false} 
-        infiniteLoop 
-        useKeyboardArrows 
-        showArrows={true} 
-        showStatus={false} 
-        showIndicators={true}
-        centerMode
-        centerSlidePercentage={10}
-      >
+      <Slider {...carouselConfig}>
         {featuredPlaylists.map((playlist) => (
           <div key={playlist.id} className="carousel-slide">
             <div className="carousel-group">
@@ -192,19 +213,10 @@ const SpotifyCarousel = () => {
             </div>
           </div>
         ))}
-      </Carousel>
+      </Slider>
 
       <h2>Workout Playlists</h2>
-      <Carousel 
-        showThumbs={false} 
-        infiniteLoop 
-        useKeyboardArrows 
-        showArrows={true} 
-        showStatus={false} 
-        showIndicators={true}
-        centerMode
-        centerSlidePercentage={10}
-      >
+      <Slider {...carouselConfig}>
         {workoutPlaylists.map((playlist) => (
           <div key={playlist.id} className="carousel-slide">
             <div className="carousel-group">
@@ -218,21 +230,12 @@ const SpotifyCarousel = () => {
             </div>
           </div>
         ))}
-      </Carousel>
+      </Slider>
 
       {Object.keys(genrePlaylists).map((genre) => (
         <div key={genre}>
           <h2>{genre.charAt(0).toUpperCase() + genre.slice(1)} Playlists</h2>
-          <Carousel 
-            showThumbs={false} 
-            infiniteLoop 
-            useKeyboardArrows 
-            showArrows={true} 
-            showStatus={false} 
-            showIndicators={true}
-            centerMode
-            centerSlidePercentage={10}
-          >
+          <Slider {...carouselConfig}>
             {genrePlaylists[genre].map((playlist) => (
               <div key={playlist.id} className="carousel-slide">
                 <div className="carousel-group">
@@ -246,7 +249,7 @@ const SpotifyCarousel = () => {
                 </div>
               </div>
             ))}
-          </Carousel>
+          </Slider>
         </div>
       ))}
 

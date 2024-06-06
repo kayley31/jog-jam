@@ -1,6 +1,6 @@
 import NewPlaylist from "../Components/NewPlaylist";
 import { useNavigate } from 'react-router-dom';
-import SpotifyCarousel from "../Components/SpotifyCarousel";
+import Featured from "../Components/Featured";
 
 function Home(){
     const navigate = useNavigate();
@@ -8,7 +8,7 @@ function Home(){
         <>
         <h1>Welcome to Jog Jam!</h1>
         <br />
-        <SpotifyCarousel />
+        <Featured />
         <button onClick={() => navigate('/find')} className='seeAll'>See All</button>
         <h3>My Playlists</h3>
         <NewPlaylist />
