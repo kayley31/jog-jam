@@ -8,7 +8,8 @@ Before you continue, please make sure you are in the `main` branch
 
 ### Running Node Server
 Get the node server up and running by:
-1) Going into ./spotify-app/node-server
+1) Going into ./spotify-app/node-server:
+    `cd ./spotify-app/node-server`
 2) Running the following in the terminal to install config which holds the Spotify credentials:
     `npm install config`
 3) Then in your terminal run the following to start the Node server:
@@ -18,14 +19,15 @@ If this step is successful, you should see "Server is running on port 3001" in t
 
 ### Running React Application
 Get the react application up and running by:
-1) Going into ./spotify-app/running-app
+1) Going into ./spotify-app/running-app:
+    `cd ./spotify-app/running-app`
 2) Making sure you have react bootstrap dependencies, you should run the following command in the terminal:
     `npm install react-router-dom react-bootstrap bootstrap`
 3) Making sure you have installed the redux packages by running the following in the terminal:
     `npm install`
+4) Starting the application:
+    `npm start`
 
-If this is successful you should see "You can now view running-app in the browser".
-
-You should now be able to see the application running locally:
+If this is successful you should now be able to see the application running locally at:
 
 http://localhost:3000

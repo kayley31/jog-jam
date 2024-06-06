@@ -6,7 +6,7 @@ function MyPlaylists(){
     const navigate = useNavigate();
     return(
         <>
-        <h1>My Playlists</h1>
+        <h2>My Playlists</h2>
         <NewPlaylist />
         <button onClick={() => navigate('/create')} className='createBtn'>Create New Playlist</button>
         </>
