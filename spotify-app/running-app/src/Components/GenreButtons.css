@@ -1,0 +1,60 @@
+/*genre title*/
+.genre-buttons-container {
+    text-align: left;
+    margin: 5px 0;  
+}
+
+
+/*button spacing*/
+.genre-buttons {
+    display: flex;
+    justify-content: left;
+    gap: 10px;
+    padding: 20px
+}
+
+/*style for all genre button */ 
+.genre-buttons button {
+    background-color: #FCFC62;
+    color: black;
+    font-size: 18px;
+    font-weight: 600;
+    border: none;
+    padding: 10px 50px;
+    cursor: pointer;
+    border-radius: 6px;
+    transition: background-color 0.4s ease;
+}
+
+/*specific background colour per genre button */ 
+/*colour of buttons are looped if more than 5*/
+.genre-buttons button:nth-child(5n+1){
+    background-color: #FCFC62;
+}
+
+.genre-buttons button:nth-child(5n+2){
+    background-color: #FEFFEA;
+}
+
+.genre-buttons button:nth-child(5n+3){
+    background-color: #b9b8b8;
+}
+
+.genre-buttons button:nth-child(5n+4){
+    background-color: #A3A3A3;
+    color: white
+}
+
+.genre-buttons button:nth-child(5n+5){
+    background-color: #424242;
+    color: white
+}
+
+/*hover effect*/
+.genre-buttons button:hover {
+    background-color: #C9C9C9;
+    color: black;
+}
+
+
+
