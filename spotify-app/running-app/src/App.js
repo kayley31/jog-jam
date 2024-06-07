@@ -12,6 +12,7 @@ import CreatePlaylists from './Webpages/CreatePlaylists';
 import {BrowserRouter as Router, Route, Routes} from 'react-router-dom';
 import AboutUs from './Components/AboutUs';
 import FindPlaylists from './Webpages/FindPlaylists';
+import GenreButtons from './Components/GenreButtons';
 
 function App() {
   return (
