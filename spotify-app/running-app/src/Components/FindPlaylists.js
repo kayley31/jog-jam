@@ -4,6 +4,7 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import './FindPlaylists.css';
 import Popup from './Popup';
+import GenreButtons from './GenreButtons';
 
 const SpotifyCarousel = () => {
   const [featuredPlaylists, setFeaturedPlaylists] = useState([]);
@@ -15,7 +16,10 @@ const SpotifyCarousel = () => {
   const [selectedPlaylist, setSelectedPlaylist] = useState(null);
   const [tracks, setTracks] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedGenre, setSelectedGenre] = useState('');
+  const genres = ['pop', 'rock', 'hiphop', 'jazz', 'disney', 'workout', 'alternative'];
 
+  //fetch access token on component mount
   useEffect(() => {
     const clientId = '91727066bc3e42939489ab03d5124e47';
     const clientSecret = '87deaae70e0c4ec5a8c223d66b9eea62';
@@ -45,6 +49,7 @@ const SpotifyCarousel = () => {
     getToken();
   }, []);
 
+  //fetch playlists when access token is available 
   useEffect(() => {
     if (accessToken) {
       const fetchFeaturedPlaylists = async () => {
@@ -66,28 +71,6 @@ const SpotifyCarousel = () => {
         } catch (error) {
           console.error('Failed to fetch featured playlists:', error);
           setError('Failed to fetch featured playlists');
-        }
-      };
-
-      const fetchPlaylistsByGenre = async (genre) => {
-        try {
-          console.log(`Fetching playlists for genre: ${genre} with token:`, accessToken);
-          const result = await fetch(`https://api.spotify.com/v1/browse/categories/${genre}/playlists`, {
-            headers: {
-              'Authorization': 'Bearer ' + accessToken
-            }
-          });
-
-          const data = await result.json();
-          if (data.playlists) {
-            return data.playlists.items;
-          } else {
-            console.error(`Failed to fetch playlists for genre ${genre}:`, data);
-            return [];
-          }
-        } catch (error) {
-          console.error(`Failed to fetch playlists for genre ${genre}:`, error);
-          return [];
         }
       };
 
@@ -113,7 +96,30 @@ const SpotifyCarousel = () => {
         }
       };
 
-      const genres = ['pop', 'rock', 'hiphop', 'jazz', 'classical'];
+      //fetch playlists for specific genre
+      const fetchPlaylistsByGenre = async (genre) => {
+        try {
+          console.log(`Fetching playlists for genre: ${genre} with token:`, accessToken);
+          const result = await fetch(`https://api.spotify.com/v1/browse/categories/${genre}/playlists`, {
+            headers: {
+              'Authorization': 'Bearer ' + accessToken
+            }
+          });
+
+          const data = await result.json();
+          if (data.playlists) {
+            return data.playlists.items;
+          } else {
+            console.error(`Failed to fetch playlists for genre ${genre}:`, data);
+            return [];
+          }
+        } catch (error) {
+          console.error(`Failed to fetch playlists for genre ${genre}:`, error);
+          return [];
+        }
+      };
+
+      //fetch all genres playlists
       Promise.all(genres.map(fetchPlaylistsByGenre)).then(results => {
         const playlistsByGenre = genres.reduce((acc, genre, index) => {
           acc[genre] = results[index];
@@ -132,6 +138,11 @@ const SpotifyCarousel = () => {
     }
   }, [accessToken]);
 
+  const handleGenreClick = (genre) => {
+    setSelectedGenre(genre);
+  };
+
+      //handle playlist click to fetch tracks
   const handlePlaylistClick = async (playlistId) => {
     try {
       const result = await fetch(`https://api.spotify.com/v1/playlists/${playlistId}/tracks`, {
@@ -139,7 +150,7 @@ const SpotifyCarousel = () => {
           'Authorization': 'Bearer ' + accessToken
         }
       });
-
+      
       const data = await result.json();
       if (data.items) {
         setTracks(data.items);
@@ -150,14 +161,15 @@ const SpotifyCarousel = () => {
         setError('Failed to fetch tracks');
       }
     } catch (error) {
-      console.error('Failed to fetch tracks:', error);
-      setError('Failed to fetch tracks');
-    }
-  };
+        console.error('Failed to fetch tracks:', error);
+        setError('Failed to fetch tracks');
+      }
+    };
 
-  const closeModal = () => {
-    setIsModalOpen(false);
-  };
+    //close popup modal
+    const closeModal = () => {
+      setIsModalOpen(false);
+    };
 
   const carouselConfig = {
     dots: true,
@@ -188,16 +200,41 @@ const SpotifyCarousel = () => {
     ],
   };
 
+  //render loading state
   if (loading) {
     return <div>Loading...</div>;
   }
 
+  //render error state
   if (error) {
     return <div>{error}</div>;
   }
 
+  //render the main content
   return (
     <div className="carousel-container">
+      <GenreButtons genres={genres} onGenreClick={handleGenreClick} />
+      {selectedGenre && (
+        <>
+        <h2>{selectedGenre.charAt(0).toUpperCase() + selectedGenre.slice(1)} Playlists</h2>
+        <Slider {...carouselConfig}>
+          {genrePlaylists[selectedGenre].map((playlist) => (
+            <div key={playlist.id} className="carousel-slide">
+              <div className="carousel-group">
+                <div
+                 key={playlist.id} 
+                 className="playlist-item"
+                 onClick={() => handlePlaylistClick(playlist.id)}
+              >
+                 <img src={playlist.images[0]?.url} alt={playlist.name} />  
+               </div> 
+             </div>
+           </div>
+         ))}
+        </Slider>
+        </> 
+      )}
+
       <h2>Featured Playlists</h2>
       <Slider {...carouselConfig}>
         {featuredPlaylists.map((playlist) => (
