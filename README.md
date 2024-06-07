@@ -1,32 +1,58 @@
 # Welcome to the Jog Jam App
 
+## Overview
+
 For our final project, we have created an app called ‘Jog Jam’ which generates music playlists for runners. We chose this project as it allowed us to put into practice the skills we have learned throughout the degree, while pushing us beyond our initial skill set. The project aims to create a fully functioning React application that is cohesive and scalable, while satisfying a potential gap in the market for people who listen to music while they run.
+
 
 ## How to run the app
 
 Before you continue, please make sure you are in the `main` branch
 
-### Running Node Server
+### Installation
+
+Clone the repository and navigate into the project folder by running the following command in your terminal:
+   ```
+    git clone https://github.com/j4sm1ne96/group4.git
+    cd group4
+   ```
+
+### Running the Node Server
 Get the node server up and running by:
-1) Going into ./spotify-app/node-server:
-    `cd ./spotify-app/node-server`
+
+1) Navigating to the node-server folder:
+
+    ```
+    cd ./spotify-app/node-server
+    ```
 2) Running the following in the terminal to install config which holds the Spotify credentials:
-    `npm install config`
-3) Then in your terminal run the following to start the Node server:
-    `node server.js`
+    ```
+    npm install config
+    ```
+3) Then run the following in your terminal to start the Node server:
+    ```
+    node server.js
+    ```
 
 If this step is successful, you should see "Server is running on port 3001" in the terminal.
 
-### Running React Application
-Get the react application up and running by:
-1) Going into ./spotify-app/running-app:
-    `cd ./spotify-app/running-app`
-2) Making sure you have react bootstrap dependencies, you should run the following command in the terminal:
-    `npm install react-router-dom react-bootstrap bootstrap`
-3) Making sure you have installed the redux packages by running the following in the terminal:
-    `npm install`
+### Running the React Application
+
+Get the React application up and running by:
+
+1) Opening a new terminal and navigating into the running-app folder:
+
+    ```
+    cd ./group4/spotify-app/running-app
+    ```
+2) Installing all dependancies:
+    ```
+    npm install
+    ```
 4) Starting the application:
-    `npm start`
+    ```
+    npm start
+    ```
 
 If this is successful you should now be able to see the application running locally at:
 
