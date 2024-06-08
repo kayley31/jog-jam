@@ -128,7 +128,7 @@ const limitedGenres = [
     dispatch(addPlaylist(newPlaylist));
 
     console.log('Playlist created:', newPlaylist);
-    alert('Playlist created!');
+    alert('Playlist created, see your playlist under "my playlists".');
     setPlaylistName('');
     // Clearing recommendations after playlist creation
     dispatch(recommendationsReceived([]));

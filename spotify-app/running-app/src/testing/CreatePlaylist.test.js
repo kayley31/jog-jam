@@ -41,8 +41,6 @@ test('Fetch genres when CreatePlaylist is rendered', () => {
 });
 
 
-
-// Test to check if tempo category state updates on dropdown change
 test('Tempo category state updates on dropdown change', () => {
   render(
     <Provider store={store}>
@@ -60,7 +58,6 @@ test('Tempo category state updates on dropdown change', () => {
 });
 
 
-// Tests to see if recommendations are fetched
 test('Recommendations are requested after user selects preferences', () => {
   
   const store = mockStore({
@@ -114,8 +111,7 @@ test('Recommendations are requested after user selects preferences', () => {
 });
 
 
-// Test to see if error message displays
-test('displays error states', () => {
+test('Displays error message when API call fails', () => {
   // Create a store with an error state
   const errorState = {
     ...initialState,
@@ -139,7 +135,6 @@ test('displays error states', () => {
 });
 
 
-// Test to see if alert pops up when tempo category isn't selected
 test('Alerts when tempo category is not selected', () => {
   window.alert = jest.fn();
 
@@ -159,8 +154,7 @@ test('Alerts when tempo category is not selected', () => {
 });
 
 
-// Test to see if alert pops up when genre category isn't selected or artist name hasn't been input
-test('Alert for missing genre or artist', () => {
+test('Alert for missing genre or artist input', () => {
   window.alert = jest.fn();
 
   render(
@@ -181,7 +175,6 @@ test('Alert for missing genre or artist', () => {
 });
 
 
-// Test to check if the 'Create Playlist' button appears after recommendations are generated
 test('Renders Create Playlist button after generating recommendations', () => {
 
   // Create a store with mock data for recommendations
@@ -213,7 +206,6 @@ test('Renders Create Playlist button after generating recommendations', () => {
 });
 
 
-// Test to verify if the 'playlists/add' action is dispatched when a playlist is created
 test('dispatches addPlaylist action on playlist creation', () => {
 
   // Create a store with mock data for recommendations

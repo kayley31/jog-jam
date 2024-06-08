@@ -18,10 +18,10 @@ const playlistCovers = [
     './covers/violin.png'
 ];
 
-const NewPlaylist = () => {
+const NewPlaylist = ({ limit }) => {
     
     // Accessing the playlists state from the Redux store
-    const playlists = useSelector((state => state.playlists.playlists))
+    const playlists = useSelector((state => state.playlists.playlists));
     
     // State to keep track of the currently selected playlist
     const [selectedPlaylist, setSelectedPlaylist] = useState(null);
@@ -34,11 +34,14 @@ const NewPlaylist = () => {
         setSelectedPlaylist(null);
     };
 
+    // Apply the limit to playlists if limit prop is provided
+    const displayedPlaylists = limit ? playlists.slice(0, limit) : playlists;
+
     return (
         <div>
             {playlists.length > 0 ? (
                 <div className="playlist-container">
-                    {playlists.map((playlist, index) => (
+                    {displayedPlaylists.map((playlist, index) => (
                         <div key={index} className="playlist-item" onClick={() => openPlaylist(playlist)}>
                             <div className="playlist-cover">
                                 <img src={playlistCovers[index % playlistCovers.length]} alt={playlist.name} />
