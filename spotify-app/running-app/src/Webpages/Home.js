@@ -7,7 +7,11 @@ function Home() {
     const navigate = useNavigate();
     return (
         <>
-            <h1>Welcome Back to Jog Jam!</h1>
+            <h1>Welcome to Jog Jam!</h1>
+            <div>
+            <p className='homepage'>If you're new here, make sure to visit the <span className="links" onClick={() => navigate('/create')}>Create Playlists page</span> to get started, or explore our <span className="links" onClick={() => navigate('/find')}>ready-made playlists</span>.</p>
+            <p className='homepage'> If you're a returning Jog Jammer, please see your saved playlists below.</p>
+            </div>
             <h3>Featured Playlists</h3>
             <Featured />
             <button onClick={() => navigate('/find')} className='seeAll'>See All</button>

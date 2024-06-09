@@ -21,3 +21,12 @@ h1 {
   flex-direction: column;
   height: 100%;
 }
+
+.homepage {
+  text-align: center;
+}
+
+span {
+  cursor: pointer;
+  text-decoration: underline;
+}
