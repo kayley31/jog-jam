@@ -9,6 +9,7 @@ import "./FindPlaylists.css";
 class SpotifyCarousel extends Component {
   constructor(props) {
     super(props);
+    // Initialize state variables
     this.state = {
       featuredPlaylists: [],
       accessToken: '',
@@ -20,6 +21,7 @@ class SpotifyCarousel extends Component {
     };
   }
 
+  // Fetch access token when component mounts
   componentDidMount() {
     const clientId = '91727066bc3e42939489ab03d5124e47';
     const clientSecret = '87deaae70e0c4ec5a8c223d66b9eea62';
@@ -48,6 +50,7 @@ class SpotifyCarousel extends Component {
     getToken();
   }
 
+  // Fetch featured playlists using the access token
   fetchFeaturedPlaylists = async () => {
     const { accessToken } = this.state;
     try {
@@ -71,6 +74,7 @@ class SpotifyCarousel extends Component {
     }
   }
 
+  // Handle click on a playlist to fetch its tracks
   handlePlaylistClick = async (playlistId) => {
     const { accessToken } = this.state;
     try {
@@ -93,10 +97,12 @@ class SpotifyCarousel extends Component {
     }
   }
 
+  // Close the popup modal
   closeModal = () => {
     this.setState({ isModalOpen: false });
   }
 
+  // Configuration settings for the carousel
   carouselConfig() {
     return {
       dots: true,
@@ -128,6 +134,7 @@ class SpotifyCarousel extends Component {
     };
   }
 
+  // Render the slider with playlists
   renderSlider() {
     const { featuredPlaylists } = this.state;
     if (!featuredPlaylists.length) {
@@ -156,20 +163,23 @@ class SpotifyCarousel extends Component {
   render() {
     const { loading, error, isModalOpen, tracks } = this.state;
 
+    // Show loading message
     if (loading) {
       return <div>Loading...</div>;
     }
 
+    // Show error message
     if (error) {
       return <div>{error}</div>;
     }
 
     return (
       <section>
-        <h2>Featured Playlists</h2>
+        {/* Render the carousel */}
         <div className="carousel">
           {this.renderSlider()}
         </div>
+        {/* Popup to show tracks in the selected playlist */}
         <Popup show={isModalOpen} onClose={this.closeModal}>
           <div className="tracks">
             <h2>Tracks in Selected Playlist</h2>
