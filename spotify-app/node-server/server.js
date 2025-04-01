@@ -1,12 +1,13 @@
 import express from 'express';
 import fetch from 'node-fetch';
 import cors from 'cors';
-import config from 'config';
+
+require('dotenv').config();
 
 const app = express();
 const PORT = config.get('port');
-const clientId = config.get('clientId');
-const clientSecret = config.get('clientSecret');
+const clientId = process.env.clientId;
+const clientSecret = process.env.clientSecret;
 
 app.use(express.json());
 

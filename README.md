@@ -7,18 +7,8 @@ For our final project, we have created an app called ‘Jog Jam’ which generat
 
 ## How to run the app
 
-Before you continue, please make sure you are in the `main` branch
-
-### Installation
-
-Clone the repository and navigate into the project folder by running the following command in your terminal:
-   ```
-    git clone https://github.com/j4sm1ne96/group4.git
-    cd group4
-   ```
-
 ### Running the Node Server
-Get the node server up and running by:
+Get the Node server up and running by:
 
 1) Navigating to the node-server folder:
 
@@ -27,7 +17,7 @@ Get the node server up and running by:
     ```
 2) Running the following in the terminal to install config which holds the Spotify credentials:
     ```
-    npm install config
+    npm install dotenv
     ```
 3) Then run the following in your terminal to start the Node server:
     ```
