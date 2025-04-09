@@ -1,7 +1,19 @@
 {
   "version": 2,
+  "builds": [
+    {
+      "src": "running-app/package.json",
+      "use": "@vercel/react"
+    }
+  ],
   "routes": [
-    { "src": "/api/(.*)", "dest": "/api/$1" },
-    { "src": "/(.*)", "dest": "/index.html" }
+    {
+      "src": "/api/(.*)",
+      "dest": "running-app/api/$1.js"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "running-app/build/$1"
+    }
   ]
 }
