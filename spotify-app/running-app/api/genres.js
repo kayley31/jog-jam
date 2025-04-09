@@ -1,5 +1,6 @@
-import fetch from 'node-fetch';
 import getAccessToken from './getAccessToken';
+
+const fetch = require('node-fetch');
 
 export default async function handler(req, res) {
   // Handle CORS

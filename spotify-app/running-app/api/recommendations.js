@@ -1,4 +1,4 @@
-import fetch from 'node-fetch';
+const fetch = require('node-fetch');
 
 const tempoCategories = {
   jogging: { min: 120, max: 140 },

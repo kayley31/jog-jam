@@ -21,33 +21,26 @@ const SpotifyCarousel = () => {
 
   //fetch access token on component mount
   useEffect(() => {
-    const clientId = process.env.REACT_APP_SPOTIFY_CLIENT_ID;
-    const clientSecret = process.env.REACT_APP_SPOTIFY_CLIENT_SECRET;
-
     const getToken = async () => {
       try {
         console.log('Requesting access token...');
-        const result = await fetch('https://accounts.spotify.com/api/token', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/x-www-form-urlencoded',
-            'Authorization': 'Basic ' + btoa(clientId + ':' + clientSecret)
-          },
-          body: 'grant_type=client_credentials'
-        });
-
+        const result = await fetch('/api/getAccessToken'); // or '/api/genres' depending on your setup
         const data = await result.json();
-        console.log('Access token:', data.access_token);
-        setAccessToken(data.access_token);
+  
+        if (data.accessToken) {
+          setAccessToken(data.accessToken);
+        } else {
+          console.error('Failed to get access token from backend:', data);
+          setError('Failed to get access token');
+        }
       } catch (error) {
-        console.error('Failed to get access token:', error);
-        setError('Failed to get access token');
-        setLoading(false);
+        console.error('Error fetching access token:', error);
+        setError('Error fetching access token');
       }
     };
-
+  
     getToken();
-  }, []);
+  }, []);  
 
   //fetch playlists when access token is available 
   useEffect(() => {
