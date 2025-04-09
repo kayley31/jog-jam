@@ -21,8 +21,8 @@ const SpotifyCarousel = () => {
 
   //fetch access token on component mount
   useEffect(() => {
-    const clientId = '91727066bc3e42939489ab03d5124e47';
-    const clientSecret = '87deaae70e0c4ec5a8c223d66b9eea62';
+    const clientId = process.env.REACT_APP_SPOTIFY_CLIENT_ID;
+    const clientSecret = process.env.REACT_APP_SPOTIFY_CLIENT_SECRET;
 
     const getToken = async () => {
       try {
