@@ -14,16 +14,15 @@ const recommendationOptions = {
 
 export default async function handler(req, res) {
   // Handle CORS
-  res.setHeader('Access-Control-Allow-Origin', '*');  // Allow all domains to access this API (you can restrict to specific domains if needed)
-  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');  // Allowed HTTP methods
-  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');  // Allowed headers
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
 
-  // Handle OPTIONS request (for preflight requests)
+  // Handle OPTIONS request
   if (req.method === 'OPTIONS') {
     return res.status(200).end();
   }
 
-  // Process the request for recommendations
   try {
     const { genre, tempo, artists } = req.query;
 
@@ -31,7 +30,7 @@ export default async function handler(req, res) {
       return res.status(400).json({ error: 'Invalid tempo category' });
     }
 
-    const accessToken = await getAccessToken();
+    const accessToken = await getAccessToken();  // Fetch access token
     const tempoRange = tempoCategories[tempo];
 
     let seedArtists = [];
@@ -75,7 +74,6 @@ export default async function handler(req, res) {
   }
 }
 
-// Helper function to get the artist ID
 const getArtistId = async (artistName, accessToken) => {
   const response = await fetch(
     `https://api.spotify.com/v1/search?q=${encodeURIComponent(artistName)}&type=artist`,
@@ -91,4 +89,28 @@ const getArtistId = async (artistName, accessToken) => {
   } else {
     throw new Error(`Artist ${artistName} not found`);
   }
+};
+
+const getAccessToken = async () => {
+  const clientId = process.env.SPOTIFY_CLIENT_ID;
+  const clientSecret = process.env.SPOTIFY_CLIENT_SECRET;
+
+  const credentials = `${clientId}:${clientSecret}`;
+  const encodedCredentials = Buffer.from(credentials).toString('base64');
+
+  const response = await fetch('https://accounts.spotify.com/api/token', {
+    method: 'POST',
+    headers: {
+      'Authorization': `Basic ${encodedCredentials}`,
+      'Content-Type': 'application/x-www-form-urlencoded',
+    },
+    body: 'grant_type=client_credentials',
+  });
+
+  const data = await response.json();
+  if (!data.access_token) {
+    throw new Error('Failed to obtain access token');
+  }
+
+  return data.access_token;
 };
