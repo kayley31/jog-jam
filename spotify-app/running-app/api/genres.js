@@ -1,45 +1,53 @@
-import getAccessToken from './getAccessToken';
-const fetch = require('node-fetch');
+import { useEffect, useState } from 'react';
 
-export default async function handler(req, res) {
-  // Handle CORS
-  res.setHeader('Access-Control-Allow-Origin', '*');
-  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
-  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+function GenreFetcher() {
+  const [genres, setGenres] = useState([]);
+  const [error, setError] = useState(null);
 
-  // Handle OPTIONS request
-  if (req.method === 'OPTIONS') {
-    return res.status(200).end();
-  }
-
-  try {
-    const accessToken = await getAccessToken();
-    console.log('Access token:', accessToken); // ✅ NOW it’s defined here!
-
-    const response = await fetch(
-      'https://api.spotify.com/v1/recommendations/available-genre-seeds',
-      {
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-        },
-      }
-    );
-
-    if (!response.ok) {
-      let errorMsg = 'Unknown error';
+  useEffect(() => {
+    const fetchGenres = async () => {
       try {
-        const errorResponse = await response.json();
-        errorMsg = errorResponse?.error?.message || JSON.stringify(errorResponse);
-      } catch (jsonError) {
-        console.error('Failed to parse error response as JSON', jsonError);
-      }
-      return res.status(response.status).json({ error: errorMsg });
-    }
+        // Step 1: Get token from your backend
+        const tokenRes = await fetch('/api/getAccessToken');
+        const tokenData = await tokenRes.json();
 
-    const data = await response.json();
-    res.status(200).json(data);
-  } catch (error) {
-    console.error('Error fetching genres:', error); // full error, not just .message
-    res.status(500).json({ error: error.message });
-  }
+        if (!tokenData.accessToken) {
+          throw new Error('No access token returned');
+        }
+
+        // Step 2: Call Spotify directly from the frontend
+        const genreRes = await fetch('https://api.spotify.com/v1/recommendations/available-genre-seeds', {
+          headers: {
+            Authorization: `Bearer ${tokenData.accessToken}`,
+          },
+        });
+
+        const genreData = await genreRes.json();
+
+        if (!genreRes.ok) {
+          throw new Error(genreData?.error?.message || 'Failed to fetch genres');
+        }
+
+        setGenres(genreData.genres);
+      } catch (err) {
+        console.error('Error fetching genres:', err);
+        setError(err.message);
+      }
+    };
+
+    fetchGenres();
+  }, []);
+
+  if (error) return <p>Error: {error}</p>;
+  if (!genres.length) return <p>Loading genres...</p>;
+
+  return (
+    <ul>
+      {genres.map((genre) => (
+        <li key={genre}>{genre}</li>
+      ))}
+    </ul>
+  );
 }
+
+export default GenreFetcher;
