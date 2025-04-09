@@ -11,7 +11,6 @@ For our final project, we have created an app called ‘Jog Jam’ which generat
 Get the Node server up and running by:
 
 1) Navigating to the node-server folder:
-
     ```
     cd ./spotify-app/node-server
     ```
@@ -33,7 +32,7 @@ Get the React application up and running by:
 1) Opening a new terminal and navigating into the running-app folder:
 
     ```
-    cd ./group4/spotify-app/running-app
+    cd ./spotify-app/running-app
     ```
 2) Installing all dependancies:
     ```

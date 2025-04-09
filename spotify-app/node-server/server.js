@@ -1,79 +1,79 @@
 import express from 'express';
 import fetch from 'node-fetch';
 import cors from 'cors';
+import dotenv from 'dotenv';
 
-require('dotenv').config();
+dotenv.config();
 
 const app = express();
-const PORT = config.get('port');
-const clientId = process.env.clientId;
-const clientSecret = process.env.clientSecret;
+const PORT = process.env.PORT || 3000;
+const clientId = process.env.CLIENT_ID;
+const clientSecret = process.env.CLIENT_SECRET;
+
+if (!clientId || !clientSecret) {
+  console.error('Missing Spotify client credentials');
+  process.exit(1); // Exit if credentials are missing
+}
 
 app.use(express.json());
+app.use(cors()); // Use CORS middleware
 
-app.use((req, res, next) => {
-  res.header('Access-Control-Allow-Origin', '*');
-  res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
-  res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization');
-  next();
-});
-
-// enable CORS for all routes - to connect front and backend
-app.use(cors());
-
-// get Spotify access token using clientID and clientSecret
+// Get Spotify access token using clientId and clientSecret
 const getAccessToken = async () => {
-  let accessToken;
   try {
     const url = 'https://accounts.spotify.com/api/token';
+    const authHeader = 'Basic ' + Buffer.from(clientId + ':' + clientSecret).toString('base64');
     const response = await fetch(url, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded',
-        'Authorization': 'Basic ' + Buffer.from(clientId + ':' + clientSecret).toString('base64'),
+        Authorization: authHeader,
       },
-      body: new URLSearchParams({
-        grant_type: 'client_credentials',
-      }),
+      body: new URLSearchParams({ grant_type: 'client_credentials' }),
     });
 
     const data = await response.json();
-    accessToken = data.access_token;
-
-  } 
-  // if there is an error with the original credentials, try backup credentials
-  catch (error) {
+    if (data.error) throw new Error(data.error.message);
+    return data.access_token;
+  } catch (error) {
     console.error('Error fetching access token with primary credentials:', error.message);
-    // fallback to backup credentials
-    clientId = config.get('backupClientId');
-    clientSecret = config.get('backupClientSecret');
-    console.log('Using backup credentials:', clientId, clientSecret);
-    const response = await fetch('https://accounts.spotify.com/api/token', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/x-www-form-urlencoded',
-        'Authorization': 'Basic ' + Buffer.from(clientId + ':' + clientSecret).toString('base64'),
-      },
-      body: new URLSearchParams({
-        grant_type: 'client_credentials',
-      }),
-    });
-    const data = await response.json();
-    accessToken = data.access_token;
+    // Fallback to backup credentials
+    return getAccessTokenWithBackup();
   }
-  return accessToken;
+};
 
+// Fallback method for access token using backup credentials
+const getAccessTokenWithBackup = async () => {
+  if (!backupClientId || !backupClientSecret) {
+    console.error('No backup credentials available');
+    throw new Error('No backup credentials available');
+  }
+
+  console.log('Using backup credentials');
+  const url = 'https://accounts.spotify.com/api/token';
+  const authHeader = 'Basic ' + Buffer.from(backupClientId + ':' + backupClientSecret).toString('base64');
+  const response = await fetch(url, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded',
+      Authorization: authHeader,
+    },
+    body: new URLSearchParams({ grant_type: 'client_credentials' }),
+  });
+
+  const data = await response.json();
+  if (data.error) throw new Error(data.error.message);
+  return data.access_token;
 };
 
 app.get('/', (req, res) => {
   res.send('Welcome to our Spotify API.');
 });
 
-// get genres endpoint to display to user on frontend dropdown
+// Get genres endpoint to display on frontend dropdown
 app.get('/api/genres', async (req, res) => {
   try {
     const accessToken = await getAccessToken();
-    console.log('Using access token:', accessToken);
     const response = await fetch('https://api.spotify.com/v1/recommendations/available-genre-seeds', {
       headers: {
         Authorization: 'Bearer ' + accessToken,
@@ -83,21 +83,20 @@ app.get('/api/genres', async (req, res) => {
     const data = await response.json();
     if (data.error) {
       console.error('Error from Spotify API:', data.error);
-      res.status(data.error.status || 500).json({ error: data.error.message });
-    } else {
-      res.json(data);
+      return res.status(data.error.status || 500).json({ error: data.error.message });
     }
+
+    res.json(data);
   } catch (error) {
     console.error('Error fetching genres:', error.message);
     res.status(500).json({ error: error.message });
   }
 });
 
-// Define additional parameters for recommendations
 const recommendationOptions = {
-  limit: 15, // no. of songs
-  target_danceability: 0.9, // danceability index from 0-1
-  target_popularity: 60 - 100, // popularity index from 0-100
+  limit: 15,
+  target_danceability: 0.9,
+  target_popularity: 60,
 };
 
 const tempoCategories = {
@@ -114,7 +113,7 @@ const getArtistId = async (artistName, accessToken) => {
   });
 
   const data = await response.json();
-  if (data.artists && data.artists.items.length > 0) {
+  if (data.artists.items.length > 0) {
     return data.artists.items[0].id;
   } else {
     throw new Error(`Artist ${artistName} not found`);
@@ -123,24 +122,18 @@ const getArtistId = async (artistName, accessToken) => {
 
 app.get('/api/recommendations', async (req, res) => {
   try {
-    const genre = req.query.genre;
-    const tempoCategory = req.query.tempo;
-    const artists = req.query.artists;
+    const { genre, tempo, artists } = req.query;
 
-    if (!tempoCategory || !tempoCategories[tempoCategory]) {
+    if (!tempo || !tempoCategories[tempo]) {
       return res.status(400).json({ error: 'Invalid tempo category' });
     }
 
     const accessToken = await getAccessToken();
-    console.log('Using access token:', accessToken);
-
-    const tempoRange = tempoCategories[tempoCategory];
+    const tempoRange = tempoCategories[tempo];
 
     let seedArtists = [];
     if (artists) {
-      // split artists into an array, then iterate over each artist name in the array
       const artistNames = artists.split(',').map(name => name.trim());
-      // map each name to its corresponding artist ID
       seedArtists = await Promise.all(artistNames.map(name => getArtistId(name, accessToken)));
     }
 
@@ -154,13 +147,8 @@ app.get('/api/recommendations', async (req, res) => {
       max_tempo: tempoRange.max,
     };
 
-    if (genre) {
-      queryParams.seed_genres = genre;
-    }
-
-    if (seedArtists.length > 0) {
-      queryParams.seed_artists = seedArtists.join(',');
-    }
+    if (genre) queryParams.seed_genres = genre;
+    if (seedArtists.length > 0) queryParams.seed_artists = seedArtists.join(',');
 
     const queryString = new URLSearchParams(queryParams).toString();
     const response = await fetch(`https://api.spotify.com/v1/recommendations?${queryString}`, {
@@ -172,10 +160,10 @@ app.get('/api/recommendations', async (req, res) => {
     const data = await response.json();
     if (data.error) {
       console.error('Error from Spotify API:', data.error);
-      res.status(data.error.status || 500).json({ error: data.error.message });
-    } else {
-      res.json(data);
+      return res.status(data.error.status || 500).json({ error: data.error.message });
     }
+
+    res.json(data);
   } catch (error) {
     console.error('Error fetching recommendations:', error.message);
     res.status(500).json({ error: error.message });
