@@ -1,23 +1,7 @@
 {
   "version": 2,
-  "builds": [
-    {
-      "src": "running-app/package.json",
-      "use": "@vercel/react"
-    },
-    {
-      "src": "node-server/server.js",
-      "use": "@vercel/node"
-    }
-  ],
   "routes": [
-    {
-      "src": "/api/(.*)",
-      "dest": "node-server/server.js"
-    },
-    {
-      "src": "/(.*)",
-      "dest": "running-app/build/$1"
-    }
+    { "src": "/api/(.*)", "dest": "/api/$1" },
+    { "src": "/(.*)", "dest": "/index.html" }
   ]
 }
