@@ -44,7 +44,7 @@ const limitedGenres = [
     // Dispatch the loading action before starting the fetch 
     dispatch(genresLoading());
 
-    fetch(`${process.env.REACT_APP_API_URL}/api/genres`)
+    fetch(`/api/genres`)
       .then(response => {
         if (!response.ok) {
           throw new Error(`HTTP error status: ${response.status}`);
@@ -85,7 +85,7 @@ const limitedGenres = [
     // Dispatch the loading action before starting the fetch
     dispatch(recommendationsLoading())
 
-    fetch(`${process.env.REACT_APP_API_URL}/api/recommendations?genre=${selectedGenre}&tempo=${tempoCategory}&artists=${artistNames}`)
+    fetch(`/api/recommendations?genre=${selectedGenre}&tempo=${tempoCategory}&artists=${artistNames}`)
       .then(response => {
         if (!response.ok) {
           throw new Error(`HTTP error status: ${response.status}`);
