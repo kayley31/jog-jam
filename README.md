@@ -60,10 +60,9 @@ Server is running on port 3001
 
 ### 3. Start the React app
 
-Open a new terminal and return to the main project folder:
+Open a new terminal and navigate to the spotify-app folder:
 
 ```bash
-cd ../
 npm install
 npm start
 ```
